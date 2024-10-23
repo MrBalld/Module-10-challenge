@@ -76,7 +76,7 @@ async function doAction (): Promise<void> {
         },
       ])
       .then(async ( res: any) => {
-        await pool.query(`INSERT INTO deparment (department_name) VALUES (${res.depName})`, (err: Error, _result: QueryResult) => {
+        await pool.query(`INSERT INTO deparment (department_name) VALUES ($1)`, [res.depName], (err: Error, _result: QueryResult) => {
           if(err) {
             console.log(err);
           }
@@ -103,7 +103,7 @@ async function doAction (): Promise<void> {
 
       ])
       .then(async (res: any) => {
-        await pool.query(`INSERT INTO role (role_title, role_salary, role_department_id) VALUES (${res.roleName}, ${res.roleSalary}, ${res.roleDepartmentId})`, (err: Error, _result: QueryResult) => {
+        await pool.query(`INSERT INTO role (role_title, role_salary, role_department_id) VALUES ($1, $2, $3)`, [res.roleName, res.roleSalary, res.roleDepartmentId], (err: Error, _result: QueryResult) => {
           if(err) {
             console.log(err);
           }
@@ -135,7 +135,7 @@ async function doAction (): Promise<void> {
 
     ])
     .then(async ( res: any) => {
-      await pool.query(`INSERT INTO employee (employee_first_name, employee_last_name, employee_role_id, employee_manager_id) VALUES (${res.employeeNameFirst}, ${res.employeeNameLast}, ${res.employeeRoleId}, ${res.employeeManagerId})`, (err: Error, _result: QueryResult) => {
+      await pool.query(`INSERT INTO employee (employee_first_name, employee_last_name, employee_role_id, employee_manager_id) VALUES ($1, $2, $3, $4)`, [res.employeeNameFirst, res.employeeNameLast, res.employeeRoleId, res.employeeManagerId], (err: Error, _result: QueryResult) => {
         if(err) {
           console.log(err);
         }
@@ -156,7 +156,7 @@ async function doAction (): Promise<void> {
       }
     ])
     .then(async (res: any) =>{
-      await pool.query(`UPDATE employee SET employee_role_id = ${res.roleId} WHERE employee_id = ${res.employeeId}`, (err: Error, _result: QueryResult) => {
+      await pool.query(`UPDATE employee SET employee_role_id = $1 WHERE employee_id = $2`, [res.roleId, res.employeeId], (err: Error, _result: QueryResult) => {
         if(err) {
           console.log(err);
         }
@@ -169,6 +169,5 @@ async function doAction (): Promise<void> {
 await doAction();
   });
 }
-
 doAction();
 
