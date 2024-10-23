@@ -25,8 +25,11 @@ const connectToDb = async () => {
 };
 
 await connectToDb();
-function doAction (): void {
-  inquirer
+
+
+
+async function doAction (): Promise<void> {
+  await inquirer
     .prompt([
       {
       type: 'list',
@@ -36,9 +39,9 @@ function doAction (): void {
       ],
     },
   ])
-  .then((ansers: any) => {
+  .then(async (ansers: any) => {
     if(ansers.action === 'view all departments') {
-      pool.query(`SELECT * FROM department`, (err: Error, result: QueryResult) => {
+      await pool.query(`SELECT * FROM department`, (err: Error, result: QueryResult) => {
         if(err) {
           console.log(err);
         } else if (result){
@@ -47,7 +50,7 @@ function doAction (): void {
       }
       );
     } else if (ansers.action === 'view all roles') {
-      pool.query(`SELECT * FROM role`, (err: Error, result: QueryResult) => {
+      await pool.query(`SELECT * FROM role`, (err: Error, result: QueryResult) => {
         if(err) {
           console.log(err);
         } else if (result){
@@ -56,7 +59,7 @@ function doAction (): void {
       }
       );
     } else if(ansers.action === 'view all employees') {
-      pool.query(`SELECT * FROM employee`, (err: Error, result: QueryResult) => {
+      await pool.query(`SELECT * FROM employee`, (err: Error, result: QueryResult) => {
         if(err) {
           console.log(err);
         } else if (result){
@@ -65,15 +68,15 @@ function doAction (): void {
       }
       );
     } else if(ansers.action === 'add a department') {
-      inquirer
+      await inquirer
         .prompt([{
           type: 'input',
           message: 'Please enter the name of the new department you would like to add',
           name: 'depName'
         },
       ])
-      .then((res: any) => {
-        pool.query(`INSERT INTO deparment (department_name) VALUES (${res.depName})`, (err: Error, result: QueryResult) => {
+      .then(async ( res: any) => {
+        await pool.query(`INSERT INTO deparment (department_name) VALUES (${res.depName})`, (err: Error, _result: QueryResult) => {
           if(err) {
             console.log(err);
           }
@@ -81,7 +84,7 @@ function doAction (): void {
         );
       });
     } else if (ansers.action === 'add a role') {
-      inquirer
+      await inquirer
         .prompt([{
           type: 'input',
           message: 'Please enter the title of the new role you would like to add',
@@ -99,8 +102,8 @@ function doAction (): void {
         }
 
       ])
-      .then((res: any) => {
-        pool.query(`INSERT INTO role (role_title, role_salary, role_department_id) VALUES (${res.roleName}, ${res.roleSalary}, ${res.roleDepartmentId})`, (err: Error, result: QueryResult) => {
+      .then(async (res: any) => {
+        await pool.query(`INSERT INTO role (role_title, role_salary, role_department_id) VALUES (${res.roleName}, ${res.roleSalary}, ${res.roleDepartmentId})`, (err: Error, _result: QueryResult) => {
           if(err) {
             console.log(err);
           }
@@ -108,7 +111,7 @@ function doAction (): void {
         );
       });
     } else if (ansers.action === 'add an employee') {
-      inquirer
+      await inquirer
       .prompt([{
         type: 'input',
         message: 'Please enter the first name of the new employee you would like to add',
@@ -131,8 +134,8 @@ function doAction (): void {
       }
 
     ])
-    .then((res: any) => {
-      pool.query(`INSERT INTO employee (employee_first_name, employee_last_name, employee_role_id, employee_manager_id) VALUES (${res.employeeNameFirst}, ${res.employeeNameLast}, ${res.employeeRoleId}, ${res.employeeManagerId})`, (err: Error, result: QueryResult) => {
+    .then(async ( res: any) => {
+      await pool.query(`INSERT INTO employee (employee_first_name, employee_last_name, employee_role_id, employee_manager_id) VALUES (${res.employeeNameFirst}, ${res.employeeNameLast}, ${res.employeeRoleId}, ${res.employeeManagerId})`, (err: Error, _result: QueryResult) => {
         if(err) {
           console.log(err);
         }
@@ -140,7 +143,7 @@ function doAction (): void {
       );
     });
     } else if (ansers.action === 'update an employee role') {
-      inquirer
+      await inquirer
       .prompt([{
         type: 'number',
         message: 'Please input the employee id number',
@@ -152,8 +155,8 @@ function doAction (): void {
         name: 'roleId'
       }
     ])
-    .then((res: any) =>{
-      pool.query(`UPDATE employee SET employee_role_id = ${res.roleId} WHERE employee_id = ${res.employeeId}`, (err: Error, result: QueryResult) => {
+    .then(async (res: any) =>{
+      await pool.query(`UPDATE employee SET employee_role_id = ${res.roleId} WHERE employee_id = ${res.employeeId}`, (err: Error, _result: QueryResult) => {
         if(err) {
           console.log(err);
         }
@@ -161,10 +164,11 @@ function doAction (): void {
       );
     });
     } else if (ansers.action === 'quit') {
-      return;
+      process.exit();
     }
+await doAction();
   });
-  doAction()
 }
+
 doAction();
 

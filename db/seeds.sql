@@ -14,8 +14,8 @@ VALUES ('Sales Rep', 1000.10, 1),
 
 INSERT INTO employee(employee_first_name, employee_last_name, employee_role_id, employee_manager_id)
 VALUES ('James', 'Howlett', 1, 2),
-('Ororo', 'Munroe', 1),
-('Charles', 'Xavier', 2),
-('Raven', 'Darkhome', 2),
-('Henry', 'McCoy', 3, 6),
-('Erik', 'Lehnsherr', 3);
+('Ororo', 'Munroe', 2, NULL),
+('Charles', 'Xavier', 3, NULL),
+('Raven', 'Darkhome', 4, NULL),
+('Henry', 'McCoy', 5, 6),
+('Erik', 'Lehnsherr', 6, NULL);
